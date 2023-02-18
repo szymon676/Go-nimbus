@@ -16,7 +16,7 @@ Minimalistic web framework to use in your side projects
 #### Code:
 
 ```go
-    package main
+package main
 
 import (
 	"net/http"
