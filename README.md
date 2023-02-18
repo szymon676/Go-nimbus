@@ -16,7 +16,7 @@ Minimalistic web framework to use in your side projects
 #### Code:
 
 ```go
-    package main
+package main
 
 import (
 	"net/http"
@@ -60,5 +60,5 @@ func main() {
 - built in Cors
 - blazingly fast http methods 
 - easy to use 
-- combination of many different Go frameworks so you can easly adapt to code
+- combination of many different Go frameworks so you can easily adapt to code
 
