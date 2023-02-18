@@ -3,6 +3,7 @@ package gonimbus
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -44,6 +45,16 @@ func (g *Gonimbus) applyMiddlewares(handler http.Handler) http.Handler {
 		handler = middleware(handler)
 	}
 	return handler
+}
+
+func LogRequest(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Log the incoming request
+		method := color.CyanString("%s", r.Method)
+		color.White("Incoming request %s on %s\n", method, r.URL.Path)
+		// Call the handler function
+		handler(w, r)
+	}
 }
 
 func Cors(next http.Handler) http.Handler {
@@ -139,4 +150,21 @@ func (g *Gonimbus) Redirect(link string, statuscode int, w http.ResponseWriter, 
 
 func (g *Gonimbus) Statuscode(statuscode int, w http.ResponseWriter) {
 	w.WriteHeader(statuscode)
+}
+
+func (g *Gonimbus) JSON(data interface{}, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}
+
+func (g *Gonimbus) GetCookie(name string, r *http.Request) (*http.Cookie, error) {
+	cookie, err := r.Cookie(name)
+	if err != nil {
+		return nil, err
+	}
+	return cookie, nil
+}
+
+func (g *Gonimbus) SetCookie(cookie *http.Cookie, w http.ResponseWriter) {
+	http.SetCookie(w, cookie)
 }
