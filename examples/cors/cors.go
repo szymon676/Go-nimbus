@@ -18,7 +18,7 @@ func main() {
 	// Define a route for the root path
 	g.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// Write a response to the client with the "hello" message
-		g.String("hello", w)
+		g.String(w, "hello")
 	})
 
 	// Start the server and listen for incoming requests on port 3000

@@ -57,7 +57,10 @@ func main() {
 ## Features
 
 - Caching requests
-- built in Cors
+- Loggin requests (only when you want to)
+- basic authentication
+- built in Cors middleware
+- cookies support
 - blazingly fast http methods 
 - easy to use 
 - combination of many different Go frameworks so you can easily adapt to code

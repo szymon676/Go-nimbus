@@ -76,6 +76,22 @@ type CacheOptions struct {
 	MustRevalidate bool          // Whether the cache must revalidate after expiration.
 }
 
+// BasicAuth is a middleware that adds basic authentication to the request.
+func BasicAuth(username, password string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			user, pass, ok := r.BasicAuth()
+			if !ok || user != username || pass != password {
+				w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+				w.WriteHeader(http.StatusUnauthorized)
+				w.Write([]byte("Unauthorized\n"))
+				return
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
 // Cache is a middleware that adds caching headers to the response.
 func Cache(opts *CacheOptions) func(http.Handler) http.Handler {
 	expireTime := time.Time{}
@@ -110,61 +126,94 @@ func Cache(opts *CacheOptions) func(http.Handler) http.Handler {
 	}
 }
 
+// Get registers a GET request route with the provided path and handler function.
 func (g *Gonimbus) Get(path string, handle http.HandlerFunc) {
+	// Define the route using the httprouter library.
 	g.router.GET(path, func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		// Call the provided handler function, passing in the response writer and the request with a context.
 		handle(w, r.WithContext(ctx))
 	})
 }
 
+// Post registers a POST request route with the provided path and handler function.
 func (g *Gonimbus) Post(path string, handle http.HandlerFunc) {
+	// Define the route using the httprouter library.
 	g.router.POST(path, func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		// Call the provided handler function, passing in the response writer and the request with a context.
 		handle(w, r.WithContext(ctx))
 	})
 }
 
+// Put registers a PUT request route with the provided path and handler function.
 func (g *Gonimbus) Put(path string, handle http.HandlerFunc) {
+	// Define the route using the httprouter library.
 	g.router.PUT(path, func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		// Call the provided handler function, passing in the response writer and the request with a context.
 		handle(w, r.WithContext(ctx))
 	})
 }
 
+// Delete registers a DELETE request route with the provided path and handler function.
 func (g *Gonimbus) Delete(path string, handle http.HandlerFunc) {
+	// Define the route using the httprouter library.
 	g.router.DELETE(path, func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		// Call the provided handler function, passing in the response writer and the request with a context.
 		handle(w, r.WithContext(ctx))
 	})
 }
 
+// Head registers a HEAD request route with the provided path and handler function.
 func (g *Gonimbus) Head(path string, handle http.HandlerFunc) {
+	// Define the route using the httprouter library.
 	g.router.HEAD(path, func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		// Call the provided handler function, passing in the response writer and the request with a context.
 		handle(w, r.WithContext(ctx))
 	})
 }
 
-func (g *Gonimbus) String(prompt string, w http.ResponseWriter) {
+// String writes the provided prompt as a string to the response writer.
+func (g *Gonimbus) String(w http.ResponseWriter, prompt string) {
 	w.Write([]byte(prompt))
 }
 
-func (g *Gonimbus) Redirect(link string, statuscode int, w http.ResponseWriter, r *http.Request) {
+// Redirect redirects the client to the provided link with the provided status code.
+func (g *Gonimbus) Redirect(w http.ResponseWriter, r *http.Request, link string, statuscode int) {
 	http.Redirect(w, r, link, statuscode)
 }
 
-func (g *Gonimbus) Statuscode(statuscode int, w http.ResponseWriter) {
+// Return writes the provided values to the response writer as a string.
+func (g *Gonimbus) Return(w http.ResponseWriter, a ...interface{}) {
+	fmt.Fprint(w, a...)
+}
+
+// Statuscode sets the provided status code to the response writer.
+func (g *Gonimbus) Statuscode(w http.ResponseWriter, statuscode int) {
 	w.WriteHeader(statuscode)
 }
 
-func (g *Gonimbus) JSON(data interface{}, w http.ResponseWriter, r *http.Request) {
+// JSON writes the provided data to the response writer as a JSON object.
+func (g *Gonimbus) JSON(w http.ResponseWriter, r *http.Request, data interface{}) {
+	// Set the content type of the response writer to JSON.
 	w.Header().Set("Content-Type", "application/json")
+	// Encode the provided data as a JSON object and write it to the response writer.
 	json.NewEncoder(w).Encode(data)
 }
 
-func (g *Gonimbus) GetCookie(name string, r *http.Request) (*http.Cookie, error) {
+// GetCookie retrieves the cookie with the specified name from the given request
+// Returns the cookie or an error if the cookie is not found
+func (g *Gonimbus) GetCookie(r *http.Request, name string) (*http.Cookie, error) {
+	// Use the Request's Cookie method to retrieve the cookie with the specified name
 	cookie, err := r.Cookie(name)
+	// If the cookie is not found, return nil and the error
 	if err != nil {
 		return nil, err
 	}
+	// If the cookie is found, return the cookie and nil error
 	return cookie, nil
 }
 
-func (g *Gonimbus) SetCookie(cookie *http.Cookie, w http.ResponseWriter) {
+// SetCookie sets the given cookie in the response writer's headers
+func (g *Gonimbus) SetCookie(w http.ResponseWriter, cookie *http.Cookie) {
+	// Use the ResponseWriter's SetCookie method to set the cookie in the headers
 	http.SetCookie(w, cookie)
 }

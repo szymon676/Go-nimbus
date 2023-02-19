@@ -28,7 +28,7 @@ func main() {
 	// Define a route to return a JSON response of the users slice
 	app.Get("/jsonexample", func(w http.ResponseWriter, r *http.Request) {
 		// Use the JSON method to encode the users slice and write it to the response
-		app.JSON(users, w, r)
+		app.JSON(w, r, users)
 	})
 
 	// Start the server and listen on port 8080

@@ -104,7 +104,7 @@ func BenchmarkGonimbus_String(b *testing.B) {
 	rr := httptest.NewRecorder()
 
 	for i := 0; i < b.N; i++ {
-		g.String("Hello, world!", rr)
+		g.String(rr, "hello world")
 		rr.Body.Reset()
 	}
 }

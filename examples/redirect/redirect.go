@@ -13,7 +13,7 @@ func main() {
 	// Define a GET route for the root path "/"
 	g.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// Redirect the client to the URL "http://localhost:3000" with status code 301 (Moved Permanently)
-		g.Redirect("http://localhost:3000", http.StatusMovedPermanently, w, r)
+		g.Redirect(w, r, "http://localhost:3000", http.StatusMovedPermanently)
 	})
 
 	// Start the server on port 1000

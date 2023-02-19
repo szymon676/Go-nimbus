@@ -13,17 +13,17 @@ func main() {
 	// Define a route for the root URL "/"
 	engine.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// Try to get the cookie with the name "my-cookie" from the request
-		cookie, err := engine.GetCookie("my-cookie", r)
+		cookie, err := engine.GetCookie(r, "my-cookie")
 		if err == nil {
 			// If the cookie exists, return its value
-			engine.String("cookie: "+cookie.Value, w)
+			engine.String(w, "cookie: "+cookie.Value)
 		} else {
 			// If the cookie doesn't exist, create a new one with the name "mycookie"
 			// and a value of the current time, and set it in the response
 			expiration := time.Now().Add(24 * time.Hour)
 			cookie := http.Cookie{Name: "mycookie", Value: time.Now().String(), Expires: expiration}
-			engine.SetCookie(&cookie, w)
-			engine.String("Cookie set successfully", w)
+			engine.SetCookie(w, &cookie)
+			engine.String(w, "Cookie set successfully")
 		}
 	})
 }
