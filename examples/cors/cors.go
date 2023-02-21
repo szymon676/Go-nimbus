@@ -12,7 +12,7 @@ func main() {
 	// Create a new instance of the Go-nimbus framework
 	g := gonimbus.New()
 
-	// Use the CORS middleware to enable cross-origin resource sharing
+	// Use CORS middleware to enable cross-origin resource sharing
 	g.Use(gonimbus.Cors)
 
 	// Define a route for the root path

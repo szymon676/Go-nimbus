@@ -8,9 +8,11 @@ import (
 
 func main() {
 	g := gonimbus.New()
-	// if you wan to add this for all routes use "use"
+
+	// if you want auth for all routes use "use"
 	g.Use(gonimbus.BasicAuth("admin", "password"))
 
+	// define a route for "auth" path after auth you get response hello
 	g.Get("/auth", func(w http.ResponseWriter, r *http.Request) {
 		g.String(w, "hello")
 	})

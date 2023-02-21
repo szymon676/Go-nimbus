@@ -10,6 +10,7 @@ import (
 func main() {
 	// Create a new Go-nimbus engine
 	engine := gonimbus.New()
+
 	// Define a route for the root URL "/"
 	engine.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// Try to get the cookie with the name "my-cookie" from the request
@@ -26,4 +27,6 @@ func main() {
 			engine.String(w, "Cookie set successfully")
 		}
 	})
+	// run your server on port 7000
+	engine.Serve("7000")
 }

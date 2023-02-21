@@ -31,6 +31,6 @@ func main() {
 		app.JSON(w, r, users)
 	})
 
-	// Start the server and listen on port 8080
+	// Start your server and listen on port 8080
 	app.Serve("8080")
 }

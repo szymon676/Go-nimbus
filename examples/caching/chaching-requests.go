@@ -2,7 +2,6 @@ package main
 
 // caching requests can help you improve performance
 import (
-	"log"
 	"net/http"
 	"time"
 
@@ -18,8 +17,8 @@ func main() {
 		Public:         true,
 		MustRevalidate: true,
 	}
-	g.Use(gonimbus.Cache(cacheOpts))
 
+	g.Use(gonimbus.Cache(cacheOpts))
 	g.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.Header().Set("Cache-Control", "public, max-age=600, must-revalidate")
@@ -28,7 +27,5 @@ func main() {
 	})
 
 	// Start the server.
-	if err := g.Serve("3000"); err != nil {
-		log.Fatal(err)
-	}
+	g.Serve("3000")
 }

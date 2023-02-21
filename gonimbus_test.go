@@ -3,6 +3,7 @@ package gonimbus
 // benchmarks
 import (
 	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -99,6 +100,24 @@ func BenchmarkGonimbus_Head(b *testing.B) {
 	}
 }
 
+func BenchmarkGonimbus_PATCH(b *testing.B) {
+	g := New()
+	g.Patch("/", func(w http.ResponseWriter, r *http.Request) {
+		// Do nothing
+	})
+
+	req, err := http.NewRequest("PATCH", "/", nil)
+	if err != nil {
+		b.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+
+	for i := 0; i < b.N; i++ {
+		g.router.ServeHTTP(rr, req)
+		rr.Body.Reset()
+	}
+}
+
 func BenchmarkGonimbus_String(b *testing.B) {
 	g := New()
 	rr := httptest.NewRecorder()
@@ -108,6 +127,54 @@ func BenchmarkGonimbus_String(b *testing.B) {
 		rr.Body.Reset()
 	}
 }
+func BenchmarkInt(b *testing.B) {
+	g := &Gonimbus{}
+	w := httptest.NewRecorder()
+
+	for i := 0; i < b.N; i++ {
+		g.Int(w, 12345)
+	}
+}
+func BenchmarkReturn(b *testing.B) {
+	g := &Gonimbus{}
+	w := httptest.NewRecorder()
+
+	for i := 0; i < b.N; i++ {
+		g.Return(w, "hello", "world")
+	}
+}
+
+func BenchmarkJSON(b *testing.B) {
+	// Create a test HTTP response recorder
+	w := httptest.NewRecorder()
+	// Create a dummy request for the JSON function
+	r, _ := http.NewRequest(http.MethodGet, "/", nil)
+	// Create a dummy data object for the JSON function
+	data := map[string]interface{}{
+		"foo": "bar",
+		"baz": 123,
+	}
+	// Create a Gonimbus instance
+	g := &Gonimbus{}
+
+	// Run the JSON function b.N times and record the execution time
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		// Reset the response recorder before each iteration
+		w = httptest.NewRecorder()
+		// Call the JSON function with the dummy request, response writer, and data
+		g.JSON(w, r, data)
+	}
+	b.StopTimer()
+
+	// Check the encoded JSON output for correctness (optional)
+	var buf bytes.Buffer
+	json.NewEncoder(&buf).Encode(data)
+	if w.Body.String() != buf.String() {
+		b.Errorf("encoded JSON output doesn't match expected output")
+	}
+}
+
 func BenchmarkCache(b *testing.B) {
 	g := New()
 

@@ -9,11 +9,12 @@ import (
 func main() {
 	// Create a new Go-nimbus engine
 	engine := gonimbus.New()
-	// use loggin request middleware
 
 	// Define a route for the root URL "/"
 	engine.Get("/req", gonimbus.LogRequest(func(w http.ResponseWriter, r *http.Request) {
 		// enjoy loggin request middleware :D
 	}))
+
+	//start gonimbus engine on port 3000
 	engine.Serve("3000")
 }

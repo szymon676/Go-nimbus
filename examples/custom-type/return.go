@@ -9,7 +9,8 @@ import (
 func main() {
 	// initialize gonimbus engine
 	g := gonimbus.New()
-	// setup route for /
+
+	// setup route for "/" path
 	g.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		// return status code
 		g.Statuscode(w, 123)
@@ -17,7 +18,7 @@ func main() {
 		g.Return(w, 123231, 1231, 31, 31, 31)
 		// you can also return arrays,slices,maps,string, floats inside this function
 	})
+
 	// run your server on port 1337
 	g.Serve("1337")
-
 }

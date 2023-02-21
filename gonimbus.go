@@ -17,16 +17,16 @@ type Gonimbus struct {
 	middlewares []func(http.Handler) http.Handler
 }
 
-var (
-	ctx = context.Background()
-)
-
 func New() *Gonimbus {
 	return &Gonimbus{
 		router:      httprouter.New(),
 		middlewares: []func(http.Handler) http.Handler{},
 	}
 }
+
+var (
+	ctx = context.Background()
+)
 
 func (g *Gonimbus) Serve(addr string) error {
 	color.Cyan("Server running on port http://localhost:" + addr)
@@ -171,9 +171,22 @@ func (g *Gonimbus) Head(path string, handle http.HandlerFunc) {
 	})
 }
 
+// Patch registers a patch request route with the given path and handler function
+func (g *Gonimbus) Patch(path string, handle http.HandlerFunc) {
+	// Define the route using the httprouter library.
+	g.router.PATCH(path, func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		// Call the provided handler function, passing in the response writer and the request with a context.
+		handle(w, r.WithContext(ctx))
+	})
+}
+
+func (g *Gonimbus) Int(w http.ResponseWriter, prompt int) {
+	fmt.Fprint(w, prompt)
+}
+
 // String writes the provided prompt as a string to the response writer.
 func (g *Gonimbus) String(w http.ResponseWriter, prompt string) {
-	w.Write([]byte(prompt))
+	fmt.Fprint(w, prompt)
 }
 
 // Redirect redirects the client to the provided link with the provided status code.
