@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	// import gonimbus
-	gonimbus "github.com/szymon676/Go-nimbus"
+	gonimbus "github.com/szymon676/go-nimbus"
 )
 
 func main() {

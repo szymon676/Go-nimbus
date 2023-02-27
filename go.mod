@@ -1,4 +1,4 @@
-module github.com/szymon676/Go-nimbus
+module github.com/szymon676/go-nimbus
 
 go 1.19
 

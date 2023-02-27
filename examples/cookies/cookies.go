@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	gonimbus "github.com/szymon676/Go-nimbus"
+	gonimbus "github.com/szymon676/go-nimbus"
 )
 
 func main() {
@@ -27,6 +27,7 @@ func main() {
 			engine.String(w, "Cookie set successfully")
 		}
 	})
+
 	// run your server on port 7000
 	engine.Serve("7000")
 }

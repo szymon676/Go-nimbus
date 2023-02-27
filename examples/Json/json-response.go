@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	gonimbus "github.com/szymon676/Go-nimbus"
+	gonimbus "github.com/szymon676/go-nimbus"
 )
 
 // Define a struct to represent a user

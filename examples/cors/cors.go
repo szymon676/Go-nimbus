@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	// Import the Go-nimbus package
-	gonimbus "github.com/szymon676/Go-nimbus"
+	gonimbus "github.com/szymon676/go-nimbus"
 )
 
 func main() {

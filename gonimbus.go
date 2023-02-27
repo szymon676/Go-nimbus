@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -201,6 +202,7 @@ func (g *Gonimbus) Return(w http.ResponseWriter, a ...interface{}) {
 
 // Statuscode sets the provided status code to the response writer.
 func (g *Gonimbus) Statuscode(w http.ResponseWriter, statuscode int) {
+	// write status code
 	w.WriteHeader(statuscode)
 }
 
@@ -210,6 +212,24 @@ func (g *Gonimbus) JSON(w http.ResponseWriter, r *http.Request, data interface{}
 	w.Header().Set("Content-Type", "application/json")
 	// Encode the provided data as a JSON object and write it to the response writer.
 	json.NewEncoder(w).Encode(data)
+}
+
+// BindJSON provides a JSON binding in request
+func (g *Gonimbus) BindJSON(r *http.Request, object interface{}) error {
+	// check if request has data inside
+	if r == nil || r.Body == nil {
+		return errors.New("no request body")
+	}
+	// after finish binding close reader
+	defer r.Body.Close()
+	// decode response body
+	decoder := json.NewDecoder(r.Body)
+	// if err is not nil return error
+	if err := decoder.Decode(&object); err != nil {
+		return err
+	}
+	// if everything is ok return nil
+	return nil
 }
 
 // GetCookie retrieves the cookie with the specified name from the given request
