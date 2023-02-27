@@ -1,67 +1,68 @@
-
 # Go-nimbus
 
-Minimalistic web framework to use in your side projects 
+## Go-nimbus is a minimalistic web framework that you can use in your side projects.
 
-## Usage:
-
-#### Downloading:
+# Usage
+## Downloading
 
 ```go
-    go get github.com/szymon676/Go-nimbus
-    go mod init 
-    go mod tidy
+   go get github.com/szymon676/Go-nimbus
+   go mod init
+   go mod tidy
 ```
 
-#### Code:
+## Code
+
+### Here's an example of how to use Go-nimbus:
 
 ```go
 package main
 
 import (
+	// import go-nimbus as a gonimbus
 	"net/http"
-
-	// Import the Go-nimbus package
 	gonimbus "github.com/szymon676/Go-nimbus"
 )
 
 func main() {
-	// Create a new instance of the Go-nimbus framework
+	// initialize gonimbus engine
 	g := gonimbus.New()
-
-	// Use the CORS middleware to enable cross-origin resource sharing
+	
+	// (optional) use cors to enable frontend fetching data
 	g.Use(gonimbus.Cors)
-
-	// Define a route for the root path
+	
+	// simple get endpoint that returns "hello"
 	g.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		// Write a response to the client with the "hello" message
 		g.String("hello", w)
 	})
-
-	// Start the server and listen for incoming requests on port 3000
+	
+	// serve your http on port 3000
 	g.Serve("3000")
 }
-```
----
-# Contributing:
 
-## steps:
-- Navigate to the Go-nimbus project at https://github.com/szymon676/Go-nimbus.
-- Click Fork
-- Select owner of forked repo
-- Write fork name and description
-- Click Create fork
-- Then clone your fork and start working on your feauters
-# Authors: 
-## Szymon Gil - szymoslav
-## Features
+```
+
+# Features
+
+## Go-nimbus includes the following features:
 
 - Caching requests
-- Loggin requests (only when you want to)
-- basic authentication
-- built in Cors middleware
-- cookies support
-- blazingly fast http methods 
-- easy to use 
-- combination of many different Go frameworks so you can easily adapt to code
+- Logging requests (only when you want to)
+- Basic authentication
+- Cookies support
+- Blazingly fast HTTP methods
+- Easy to use
+- Combination of many different Go frameworks so you can easily adapt to code
 
+# Contributing
+
+## To contribute to Go-nimbus:
+
+- Navigate to the Go-nimbus project at https://github.com/szymon676/Go-nimbus.
+- Click "Fork".
+- Select the owner of your forked repo.
+- Write the fork name and description.
+- Click "Create fork".
+- Clone your fork and start working on your features.
+
+That's it! With these simple steps, you can start using and contributing to Go-nimbus.
