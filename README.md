@@ -6,7 +6,7 @@
 ## Downloading
 
 ```go
-   go get github.com/szymon676/Go-nimbus
+   go get github.com/szymon676/go-nimbus
    go mod init
    go mod tidy
 ```
@@ -47,12 +47,15 @@ func main() {
 
 - Logging requests (only when you want to)
 - Basic authentication
-- Cookies support
 - Blazingly fast HTTP methods
 - Easy to use
 - Combination of many different Go frameworks so you can easily adapt to code
 
 # Contributing
+
+## TODO:
+
+- Templating 
 
 ## To contribute to Go-nimbus:
 
