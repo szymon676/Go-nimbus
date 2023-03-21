@@ -20,7 +20,6 @@ package main
 
 import (
 	// import go-nimbus as a gonimbus
-	"net/http"
 	gonimbus "github.com/szymon676/Go-nimbus"
 )
 
@@ -32,8 +31,8 @@ func main() {
 	g.Use(gonimbus.Cors)
 	
 	// simple get endpoint that returns "hello"
-	g.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		g.String("hello", w)
+	g.Get("/", func(c gonimbus.Context) {
+		c.String("hello")
 	})
 	
 	// serve your http on port 3000
@@ -46,7 +45,6 @@ func main() {
 
 ## Go-nimbus includes the following features:
 
-- Caching requests
 - Logging requests (only when you want to)
 - Basic authentication
 - Cookies support

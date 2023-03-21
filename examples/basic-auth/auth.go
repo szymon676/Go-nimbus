@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	gonimbus "github.com/szymon676/go-nimbus"
 )
 
@@ -13,8 +11,8 @@ func main() {
 	g.Use(gonimbus.BasicAuth("admin", "password"))
 
 	// define a route for "auth" path after auth you get response hello
-	g.Get("/auth", func(w http.ResponseWriter, r *http.Request) {
-		g.String(w, "hello")
+	g.Get("/auth", func(c gonimbus.Context) {
+		c.String(200, "hello")
 	})
 
 	g.Serve("4000")
