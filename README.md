@@ -20,7 +20,7 @@ package main
 
 import (
 	// import go-nimbus as a gonimbus
-	gonimbus "github.com/szymon676/Go-nimbus"
+	gonimbus "github.com/szymon676/go-nimbus"
 )
 
 func main() {
