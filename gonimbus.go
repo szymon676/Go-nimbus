@@ -137,15 +137,16 @@ type Context struct {
 }
 
 // String writes the provided prompt as a string to the response writer.
-func (c *Context) String(statuscode int, prompt string) {
+func (c *Context) String(statuscode int, prompt string) error {
 	c.w.WriteHeader(statuscode)
-	fmt.Fprintln(c.w, prompt)
+	_, err := fmt.Fprintln(c.w, prompt)
+	return err
 }
 
 // Return writes the provided values to the response writer as a string.
-func (c *Context) Return(statuscode int, a ...any) {
+func (c *Context) Return(statuscode int, a ...any) error {
 	c.w.WriteHeader(statuscode)
-	fmt.Fprint(c.w, a...)
+	return json.NewEncoder(c.w).Encode(&a)
 }
 
 // Redirect redirects the client to the provided link with the provided status code.
